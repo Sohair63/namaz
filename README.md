@@ -112,6 +112,23 @@ Namaz.connection = Faraday.new do |builder|
 end
 ```
 
+## CHANGE LOG:
+
+**0.1.0:** Request Using Altitudes
+**0.1.1:** Added new request Using Country and City Information
+
+**TODO:**
+Follow the link https://aladhan.com/prayer-times-api and add patch by creating a Pull Rquest, I will merge and publish new version
+
+* Calendar
+* Current Time Stamp
+* Current Time
+* City Geolocation Info
+* Address Geolocation Info
+* Calendar by City
+* Timings by Address
+* Calendar by Address
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
