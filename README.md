@@ -116,8 +116,9 @@ end
 
 * **0.1.0:** Request Using Altitudes
 * **0.1.1:** Added new request Using Country and City Information
+* **0.1.2:** Updated method name for Timings information for city from `timings` to `timings_by_city`
 
-**TODO:**
+## TODO:
 Follow the link https://aladhan.com/prayer-times-api and add patch by creating a Pull Rquest, I will merge and publish new version
 
 * Calendar
