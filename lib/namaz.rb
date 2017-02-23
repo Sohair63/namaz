@@ -10,10 +10,10 @@ module Namaz
   class << self
     # Retrieve the namaz timings for a given latitude, longitude, timezonestring and method.
     #
-    # @param latitude [Float] Latitude.
-    # @param longitude [Float] Longitude.
-    # @param timezonestring [String]
-    # @param method [Integer]
+    # @param [Float] latitude.
+    # @param [Float] longitude.
+    # @param [String] timezonestring
+    # @param [Integer] method
     # @param options [Hash], Have optional values like timestamp, that is default to Current timestamp
     def timings(latitude:, longitude:, timezonestring:, method:, options: {})
       timestamp = options[:timestamp] ? options[:timestamp] : Time.now.to_i
@@ -31,12 +31,12 @@ module Namaz
 
     # Retrieve the namaz timings for a given city, country, method.
     #
-    # @param latitude [Float] Latitude.
-    # @param longitude [Float] Longitude.
-    # @param timezonestring [String]
-    # @param method [Integer]
-    # @param options [Hash], Have optional values like timestamp, that is default to Current timestamp
-    def timings(city:, country:, method:, options: {})
+    # @param [String] city
+    # @param [String] country
+    # @param [String] timezonestring
+    # @param [Integer] method
+    # @param [Hash] options, Have optional values like timestamp, that is default to Current timestamp
+    def timings_by_city(city:, country:, method:, options: {})
       timestamp = options[:timestamp] ? options[:timestamp] : Time.now.to_i
       namaz_url = [DEFAULT_API_URL, 'timingsByCity', timestamp].join('/')
 
@@ -69,8 +69,8 @@ module Namaz
     end
 
     def namaz_response(namaz_url, params)
-      namaz_response = connection.get(namaz_url, params)
-      return Hashie::Mash.new(MultiJson.load(namaz_response.body)).data.timings if namaz_response.success?
+      response = connection.get(namaz_url, params)
+      return Hashie::Mash.new(MultiJson.load(response.body)).data.timings if response.success?
     end
   end
 end
