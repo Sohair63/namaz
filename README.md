@@ -36,7 +36,7 @@ You can then make requests to the following method.
 ## Using Altitudes:
 Namaz.timings(latitude:, longitude:, timezonestring:, method:, options: {})
 ## Using City and Country Information:
-Namaz.timings(city:, country:, method:, options: {})
+Namaz.timings_by_city(city:, country:, method:, options: {})
 ```
 
 ### Examples:
@@ -44,7 +44,7 @@ Namaz.timings(city:, country:, method:, options: {})
 # Using Altitudes:
 Namaz.timings(latitude: 31.5546, longitude: 74.3572, timezonestring: "Asia/Karachi", method: 1, options: {timestamp: Time.now.to_i})
 # Using City and Country Information:
-Namaz.timings(city: 'Karachi', country: 'PK', method: 1, options: {timestamp: Time.now.to_i})
+Namaz.timings_by_city(city: 'Karachi', country: 'PK', method: 1, options: {timestamp: Time.now.to_i})
 ```
 
 ##### Example Request Using Altitudes
@@ -55,7 +55,7 @@ timings = Namaz.timings(latitude: 31.5546, longitude: 74.3572, timezonestring: "
 ##### Example Request Using Country and City Information
 
 ```ruby
-timings = Namaz.timings(city: 'Karachi', country: 'PK', method: 1, options: {state: 'Punjab', timestamp: Time.now.to_i})
+timings = Namaz.timings_by_city(city: 'Karachi', country: 'PK', method: 1, options: {state: 'Punjab', timestamp: Time.now.to_i})
 ```
 ##### Example Response
 
@@ -114,8 +114,8 @@ end
 
 ## CHANGE LOG:
 
-**0.1.0:** Request Using Altitudes
-**0.1.1:** Added new request Using Country and City Information
+* **0.1.0:** Request Using Altitudes
+* **0.1.1:** Added new request Using Country and City Information
 
 **TODO:**
 Follow the link https://aladhan.com/prayer-times-api and add patch by creating a Pull Rquest, I will merge and publish new version
@@ -145,4 +145,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/namaz. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Sohair63/namaz. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
