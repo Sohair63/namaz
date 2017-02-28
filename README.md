@@ -100,7 +100,7 @@ calendar.first.date
 ##### Example Request Using Country and City Information
 
 ```ruby
-calendar = Namaz.calender_by_city(city: 'Lahore', country: 'PK', method: 2, options: {month: '03', year: '2017'})
+calendar = Namaz.calender_by_city(city: 'Lahore', country: 'PK', method: 2, options: {month: '02', year: '2017'})
 
 calendar.first
 #<Hashie::Mash date=#<Hashie::Mash readable="01 Feb 2017" timestamp="1485921661"> timings=#<Hashie::Mash Asr="15:54 (PKT)" Dhuhr="12:46 (PKT)" Fajr="05:56 (PKT)" Imsak="05:46 (PKT)" Isha="19:35 (PKT)" Maghrib="18:17 (PKT)" Midnight="00:46 (PKT)" Sunrise="07:14 (PKT)" Sunset="18:17 (PKT)">>
@@ -163,9 +163,10 @@ end
 
 ## CHANGE LOG:
 
-* **0.1.0:** Request Using Altitudes
-* **0.1.1:** Added new request Using Country and City Information
+* **0.1.3:** Added methods `calendar` and `calendar_by_city`
 * **0.1.2:** Updated method name for Timings information for city from `timings` to `timings_by_city`
+* **0.1.1:** Added new request Using Country and City Information
+* **0.1.0:** Request Using Altitudes
 
 ## TODO:
 Follow the link https://aladhan.com/prayer-times-api and add patch by creating a Pull Rquest, I will merge and publish new version
