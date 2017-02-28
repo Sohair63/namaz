@@ -1,6 +1,6 @@
 # Namaz
-[namaz](https://aladhan.com/prayer-times-api) API wrapper in Ruby.
-Namaz is aladhan.com wrapper in ruby to use REST API that is open for public use. The API only supports the GET method and returns JSON.
+[namaz](https://aladhan.com/prayer-times-api) ruby gem is an API wrapper.
+Namaz is aladhan.com wrapper in ruby to use REST API that is open for public use.
 
 ## Installation
 
@@ -30,6 +30,7 @@ Make sure you require the library, where you want to use it, Or require in `appl
 ```ruby
 require 'namaz'
 ```
+## Timings
 
 You can then make requests to the following method.
 ```ruby
@@ -40,33 +41,81 @@ Namaz.timings_by_city(city:, country:, method:, options: {})
 ```
 
 ### Examples:
-```ruby
-# Using Altitudes:
-Namaz.timings(latitude: 31.5546, longitude: 74.3572, timezonestring: "Asia/Karachi", method: 1, options: {timestamp: Time.now.to_i})
-# Using City and Country Information:
-Namaz.timings_by_city(city: 'Karachi', country: 'PK', method: 1, options: {timestamp: Time.now.to_i})
-```
 
-##### Example Request Using Altitudes
+##### Example Request and response Using Altitudes
 
 ```ruby
 timings = Namaz.timings(latitude: 31.5546, longitude: 74.3572, timezonestring: "Asia/Karachi", method: 1, options: {timestamp: Time.now.to_i})
+
+#=> #<Hashie::Mash Asr="15:27" Dhuhr="12:16" Fajr="05:19" Imsak="05:09" Isha="19:14" Maghrib="17:53" Midnight="00:17" Sunrise="06:41" Sunset="17:53">
+
+timings.Fajr
+#=> "05:19"
 ```
 ##### Example Request Using Country and City Information
 
 ```ruby
 timings = Namaz.timings_by_city(city: 'Karachi', country: 'PK', method: 1, options: {state: 'Punjab', timestamp: Time.now.to_i})
-```
-##### Example Response
 
-```ruby
- => #<Hashie::Mash Asr="15:27" Dhuhr="12:16" Fajr="05:19" Imsak="05:09" Isha="19:14" Maghrib="17:53" Midnight="00:17" Sunrise="06:41" Sunset="17:53">
+#<Hashie::Mash Asr="15:27" Dhuhr="12:16" Fajr="05:19" Imsak="05:09" Isha="19:14" Maghrib="17:53" Midnight="00:17" Sunrise="06:41" Sunset="17:53">
 
 timings.Fajr
- => "05:19"
+#=> "05:19"
 ```
 
-### Parameters Description
+## Calender
+
+```ruby
+## Using City and Country Information:
+Namaz.calender_by_city(city:, country:, method:, options: {})
+## Using City and Country Information:
+Namaz.calendar(latitude:, longitude:, timezonestring:, method:, options: {})
+```
+
+#### Optional Params
+`(options: {month: '8', year: '2017', state: 'Punjab' })`
+- **month** - 1 or 2 digit month. Example: '08' or '8' for August, **DEFAULT is current month**, if not given
+- **year** - 4 digit year. Example: 2017, **DEFAULT is current year**, if not given
+
+
+### Examples:
+
+##### Example Request and response Using Altitudes
+```ruby
+calendar = Namaz.calendar(latitude: 31.5546, longitude: 74.3572, timezonestring: "Asia/Karachi", method: 1, options: {month: '02', year: '2017'})
+
+calendar.first
+#<Hashie::Mash date=#<Hashie::Mash readable="01 Feb 2017" timestamp="1485921661"> timings=#<Hashie::Mash Asr="15:15 (PKT)" Dhuhr="12:16 (PKT)" Fajr="05:32 (PKT)" Imsak="05:22 (PKT)" Isha="19:00 (PKT)" Maghrib="17:37 (PKT)" Midnight="00:16 (PKT)" Sunrise="06:55 (PKT)" Sunset="17:37 (PKT)">>
+
+calendar.first.timings
+#=> #<Hashie::Mash Asr="15:15 (PKT)" Dhuhr="12:16 (PKT)" Fajr="05:32 (PKT)" Imsak="05:22 (PKT)" Isha="19:00 (PKT)" Maghrib="17:37 (PKT)" Midnight="00:16 (PKT)" Sunrise="06:55 (PKT)" Sunset="17:37 (PKT)">
+
+calendar.first.timings.Asr
+#=> "15:15 (PKT)"
+
+calendar.first.date
+#<Hashie::Mash readable="01 Feb 2017" timestamp="1485921661">
+```
+
+##### Example Request Using Country and City Information
+
+```ruby
+calendar = Namaz.calender_by_city(city: 'Lahore', country: 'PK', method: 2, options: {month: '03', year: '2017'})
+
+calendar.first
+#<Hashie::Mash date=#<Hashie::Mash readable="01 Feb 2017" timestamp="1485921661"> timings=#<Hashie::Mash Asr="15:54 (PKT)" Dhuhr="12:46 (PKT)" Fajr="05:56 (PKT)" Imsak="05:46 (PKT)" Isha="19:35 (PKT)" Maghrib="18:17 (PKT)" Midnight="00:46 (PKT)" Sunrise="07:14 (PKT)" Sunset="18:17 (PKT)">>
+
+calendar.first.timings
+#=> #<Hashie::Mash Asr="15:31 (PKT)" Dhuhr="12:15 (PKT)" Fajr="05:23 (PKT)" Imsak="05:13 (PKT)" Isha="19:07 (PKT)" Maghrib="18:01 (PKT)" Midnight="00:15 (PKT)" Sunrise="06:30 (PKT)" Sunset="18:01 (PKT)">
+
+calendar.first.timings.Asr
+#=> "15:31 (PKT)"
+
+calendar.first.date
+#<Hashie::Mash readable="01 Feb 2017" timestamp="1485921661">
+```
+
+## General Parameters Description
 * **timestamp OPTIONAL** - `DEFAULT = Time.now.to_i` a UNIX timestamp (from any time of the day) of the day for which you want the timings. If you don't specify a timestamp, the result will come back for today - today being the date in the Europe/London timezone.
 
 * **latitude** - the decimal value for the latitude co-ordinate of the location you want the time computed for. Example: 51.75865125
@@ -121,12 +170,10 @@ end
 ## TODO:
 Follow the link https://aladhan.com/prayer-times-api and add patch by creating a Pull Rquest, I will merge and publish new version
 
-* Calendar
 * Current Time Stamp
 * Current Time
 * City Geolocation Info
 * Address Geolocation Info
-* Calendar by City
 * Timings by Address
 * Calendar by Address
 
