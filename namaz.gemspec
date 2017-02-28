@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sohair1991@gmail.com"]
 
   spec.summary       = %q{Returns all prayer times for a specific date}
-  spec.description   = %q{Namaz is AlAdhan.com wrapper in ruby to use REST API that is open for public use. The API only supports the GET method and returns JSON. Currently this includes Timings only}
+  spec.description   = %q{Namaz gem is AlAdhan.com wrapper in ruby to use REST API that is open for public use.}
   spec.homepage      = "https://github.com/Sohair63/namaz"
   spec.license       = "MIT"
 
