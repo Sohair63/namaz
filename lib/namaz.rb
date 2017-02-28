@@ -26,7 +26,7 @@ module Namaz
         method: method
       }
 
-      namaz_response(namaz_url, params)
+      namaz_time_response(namaz_url, params)
     end
 
     # Retrieve the namaz timings for a given city, country, method.
@@ -47,8 +47,56 @@ module Namaz
         method: method
       }
 
-      namaz_response(namaz_url, params)
+      namaz_time_response(namaz_url, params)
     end
+
+    # Retrieve the namaz timings for a given latitude, longitude, timezonestring and method.
+    #
+    # @param [Float] latitude.
+    # @param [Float] longitude.
+    # @param [String] timezonestring
+    # @param [Integer] method
+    # @param [Hash] options, year, month, and state are OPTIONAL
+    # year is default to current year, and month is default to current month if not sent in OPTIONAL params
+    def calendar(latitude:, longitude:, timezonestring:, method:, options: {})
+      namaz_url = [DEFAULT_API_URL, 'calendar'].join('/')
+
+      params = {
+        latitude: latitude,
+        longitude: longitude,
+        timezonestring: timezonestring,
+        month: options[:month],
+        year: options[:year],
+        method: method
+      }
+
+      namaz_calender_response(namaz_url, params)
+    end
+
+
+    # Retrieve the calender for a given city, country, method.
+    # By default Retrieve current year, month
+    #
+    # @param [String] city
+    # @param [String] country
+    # @param [Integer] method
+    # @param [Hash] options, year, month, and state are OPTIONAL
+    # year is default to current year, and month is default to current month if not sent in OPTIONAL params
+    def calendar_by_city(city:, country:, method:, options: {})
+      namaz_url = [DEFAULT_API_URL, 'calendarByCity'].join('/')
+
+      params = {
+        city: city,
+        country: country,
+        month: options[:month],
+        year: options[:year],
+        state: options[:state],
+        method: method
+      }
+
+      namaz_calender_response(namaz_url, params)
+    end
+
 
     # Build or get an HTTP connection object.
     def connection
@@ -68,9 +116,15 @@ module Namaz
       connection.get(path, params)
     end
 
-    def namaz_response(namaz_url, params)
+    def namaz_time_response(namaz_url, params)
       response = connection.get(namaz_url, params)
       return Hashie::Mash.new(MultiJson.load(response.body)).data.timings if response.success?
     end
+
+    def namaz_calender_response(namaz_url, params)
+      response = connection.get(namaz_url, params)
+      return Hashie::Mash.new(MultiJson.load(response.body)).data if response.success?
+    end
+
   end
 end

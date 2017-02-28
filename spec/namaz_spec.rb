@@ -16,7 +16,10 @@ describe Namaz do
     let(:city_1) { 'Karachi' }
     let(:city_2) { 'Lahore' }
 
-    context 'without default parameters' do
+    let(:month) { '02' }
+    let(:year) { '2017' }
+
+    context 'timings' do
       it 'sends with altitudes request' do
         namaz_time = Namaz.timings(latitude: latitude, longitude: longitude, timezonestring: timezonestring, method: method_number)
         expect(namaz_time).to_not be_nil
@@ -37,6 +40,60 @@ describe Namaz do
         namaz_time = Namaz.timings(latitude: latitude, longitude: longitude, timezonestring: timezonestring, method: method_number)
         namaz_time_city = Namaz.timings_by_city(city: city_1, country: country_code, method: method_number)
         expect(namaz_time).to_not eq(namaz_time_city)
+      end
+    end
+
+    context 'calendar' do
+      it 'sends altitudes without month and year request' do
+        namaz_calendar = Namaz.calendar(latitude: latitude, longitude: longitude, timezonestring: timezonestring, method: method_number)
+        expect(namaz_calendar).to_not be_nil
+
+        date = Time.parse(namaz_calendar.first.date.readable).to_date
+        current_time = Time.now
+        end_of_month = Date.civil(current_time.year, current_time.month, -1)
+
+        expect(namaz_calendar.length).to be == end_of_month.day
+        expect(date.month).to be Time.now.to_date.month
+        expect(date.year).to be Time.now.to_date.year
+      end
+
+      it 'sends altitudes with month and year optional params request' do
+        namaz_calendar = Namaz.calendar(latitude: latitude, longitude: longitude, timezonestring: timezonestring, method: method_number, options: {month: month, year: year})
+        expect(namaz_calendar).to_not be_nil
+
+        date = Time.parse(namaz_calendar.first.date.readable).to_date
+        end_of_month = Date.civil(year.to_i, month.to_i, -1)
+
+        expect(namaz_calendar.length).to be == end_of_month.day
+        expect(date.month).to be Time.now.to_date.month
+        expect(date.year).to be Time.now.to_date.year
+      end
+
+      it 'sends with city and country name without year and month params request' do
+        namaz_calendar = Namaz.calendar_by_city(city: city_1, country: country_code, method: method_number)
+        expect(namaz_calendar).to_not be_nil
+
+        date = Time.parse(namaz_calendar.first.date.readable).to_date
+        current_time = Time.now
+        end_of_month = Date.civil(current_time.year, current_time.month, -1)
+
+        expect(namaz_calendar).to_not be_nil
+        expect(namaz_calendar.length).to be == end_of_month.day
+        expect(date.month).to be Time.now.to_date.month
+        expect(date.year).to be Time.now.to_date.year
+      end
+
+      it 'sends with city and country name with year and month params request' do
+        namaz_calendar = Namaz.calendar_by_city(city: city_1, country: country_code, method: method_number, options: {month: month, year: year})
+        expect(namaz_calendar).to_not be_nil
+
+        date = Time.parse(namaz_calendar.first.date.readable).to_date
+        end_of_month = Date.civil(year.to_i, month.to_i, -1)
+
+        expect(namaz_calendar).to_not be_nil
+        expect(namaz_calendar.length).to be == end_of_month.day
+        expect(date.month).to be Time.now.to_date.month
+        expect(date.year).to be Time.now.to_date.year
       end
     end
   end
