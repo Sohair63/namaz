@@ -8,6 +8,35 @@ module Namaz
   DEFAULT_API_URL = 'http://api.aladhan.com'
 
   class << self
+    # Retrieve the latitude, longitude and timezone for a given city
+    # @param [String] city
+    # @param [String] country
+    # @param [Hash] options state is OPTIONAL
+    # @return [Hashie::Mash] having latitude longitude and timezone
+    def city_info(city:, country:, options: {})
+      url = [DEFAULT_API_URL, 'cityInfo'].join('/')
+
+      params = {
+        city: city,
+        country: country,
+        state: options[:state]
+      }
+
+      response = connection.get(url, params)
+      return Hashie::Mash.new(MultiJson.load(response.body)).data if response.success?
+    end
+
+    # Retrieve the latitude, longitude and timezone for given address
+    # @param [address] A complete address string
+    # @return [Hashie::Mash] having latitude longitude and timezone
+    def address_info(address:)
+      url = [DEFAULT_API_URL, 'addressInfo'].join('/')
+
+      params = { address: address }
+      response = connection.get(url, params)
+      return Hashie::Mash.new(MultiJson.load(response.body)).data if response.success?
+    end
+
     # Retrieve the namaz timings for a given latitude, longitude, timezonestring and method.
     #
     # @param [Float] latitude.
@@ -96,7 +125,6 @@ module Namaz
 
       namaz_calender_response(namaz_url, params)
     end
-
 
     # Build or get an HTTP connection object.
     def connection

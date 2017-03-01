@@ -8,11 +8,12 @@ describe Namaz do
   end
 
   context 'unit tests' do
-    let(:latitude)  { 31.5546 }
-    let(:longitude) { 74.3572 }
+    let(:latitude)  { 31.5546061 }
+    let(:longitude) { 74.3571581 }
     let(:timezonestring) { 'Asia/Karachi' }
     let(:method_number) { 1 }
     let(:country_code) { 'PK' }
+    let(:state) { 'Punjab' }
     let(:city_1) { 'Karachi' }
     let(:city_2) { 'Lahore' }
 
@@ -65,8 +66,8 @@ describe Namaz do
         end_of_month = Date.civil(year.to_i, month.to_i, -1)
 
         expect(namaz_calendar.length).to be == end_of_month.day
-        expect(date.month).to be Time.now.to_date.month
-        expect(date.year).to be Time.now.to_date.year
+        expect(date.month).to be month.to_i
+        expect(date.year).to be year.to_i
       end
 
       it 'sends with city and country name without year and month params request' do
@@ -77,7 +78,6 @@ describe Namaz do
         current_time = Time.now
         end_of_month = Date.civil(current_time.year, current_time.month, -1)
 
-        expect(namaz_calendar).to_not be_nil
         expect(namaz_calendar.length).to be == end_of_month.day
         expect(date.month).to be Time.now.to_date.month
         expect(date.year).to be Time.now.to_date.year
@@ -90,10 +90,47 @@ describe Namaz do
         date = Time.parse(namaz_calendar.first.date.readable).to_date
         end_of_month = Date.civil(year.to_i, month.to_i, -1)
 
-        expect(namaz_calendar).to_not be_nil
         expect(namaz_calendar.length).to be == end_of_month.day
-        expect(date.month).to be Time.now.to_date.month
-        expect(date.year).to be Time.now.to_date.year
+        expect(date.month).to be month.to_i
+        expect(date.year).to be year.to_i
+      end
+    end
+
+    context 'city geolocation information' do
+      it 'varify the correct city geolocation information latitude longitude and timezone' do
+        city_info = Namaz.city_info(city: 'Lahore', country: 'Pakistan')
+
+        expect(city_info.longitude).to eq(longitude.to_s)
+        expect(city_info.latitude).to eq(latitude.to_s)
+        expect(city_info.timezone).to eq(timezonestring)
+      end
+
+      it 'varify the correct city geolocation information with optional parameters' do
+        city_info = Namaz.city_info(city: city_2, country: country_code, options: {state: state})
+
+        expect(city_info.longitude).to eq(longitude.to_s)
+        expect(city_info.latitude).to eq(latitude.to_s)
+        expect(city_info.timezone).to eq(timezonestring)
+      end
+    end
+
+    context 'address geolocation information' do
+      it 'varify the correct address geolocation information latitude longitude and timezone' do
+        address_info = Namaz.address_info(address: 'London, Canary Wharf, London, UK')
+
+        expect(address_info).to_not be_nil
+        expect(address_info.longitude).to_not be_nil
+        expect(address_info.latitude).to_not be_nil
+        expect(address_info.timezone).to eq('Europe/London')
+      end
+
+      it 'varify the correct partial address geolocation information latitude longitude and timezone' do
+        address_info = Namaz.address_info(address: 'London, Canary Wharf, London, UK')
+
+        expect(address_info).to_not be_nil
+        expect(address_info.longitude).to_not be_nil
+        expect(address_info.latitude).to_not be_nil
+        expect(address_info.timezone).to eq('Europe/London')
       end
     end
   end
