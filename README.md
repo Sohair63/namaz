@@ -30,9 +30,9 @@ Make sure you require the library, where you want to use it, Or require in `appl
 ```ruby
 require 'namaz'
 ```
-## Timings
 
-You can then make requests to the following method.
+## Timings
+Returns all prayer times for a specific date and for a specific date in a city. You can then make requests to the following method.
 ```ruby
 ## Using Altitudes:
 Namaz.timings(latitude:, longitude:, timezonestring:, method:, options: {})
@@ -64,7 +64,7 @@ timings.Fajr
 ```
 
 ## Calender
-
+Returns prayer times for a specific month (in a given year) and for a specific month in a city
 ```ruby
 ## Using City and Country Information:
 Namaz.calender_by_city(city:, country:, method:, options: {})
@@ -113,6 +113,37 @@ calendar.first.timings.Asr
 
 calendar.first.date
 #<Hashie::Mash readable="01 Feb 2017" timestamp="1485921661">
+```
+
+## City Information
+Returns City Geolocation Info of latitude, longitude and timezone for a given city
+### Example:
+```ruby
+city_info = Namaz.city_info(city: 'Lahore', country: 'PK', options: {state: 'Punjab'})
+#<Hashie::Mash latitude="31.5546061" longitude="74.3571581" timezone="Asia/Karachi">
+city_info.longitude
+# => "74.3571581"
+city_info.timezone
+# => "Asia/Karachi"
+```
+
+## Address Information
+Returns Address Geolocation Info of latitude, longitude and timezone for a given city
+
+### Additional Parameter
+
+**address** - A complete address string. Example: 10 Upper Bank Street, London, Canary Wharf, London, UK
+
+### Examples:
+```ruby
+address_info = address_info(address: '10 Upper Bank Street, London, Canary Wharf, London, UK')
+#<Hashie::Mash latitude="51.5026562" longitude="-0.0171995" timezone="Europe/London">
+                                -- OR --
+address_info = address_info(address: 'Upper Bank Street, London, Canary Wharf, London, UK')
+#<Hashie::Mash latitude=51.5045201 longitude=-0.0171009 timezone="Europe/London">
+                                -- OR --
+address_info = address_info(address: 'Bank Street, London, Canary Wharf, London, UK')
+#<Hashie::Mash latitude=51.5035329 longitude=-0.0213304 timezone="Europe/London">
 ```
 
 ## General Parameters Description
@@ -171,10 +202,6 @@ end
 ## TODO:
 Follow the link https://aladhan.com/prayer-times-api and add patch by creating a Pull Rquest, I will merge and publish new version
 
-* Current Time Stamp
-* Current Time
-* City Geolocation Info
-* Address Geolocation Info
 * Timings by Address
 * Calendar by Address
 
