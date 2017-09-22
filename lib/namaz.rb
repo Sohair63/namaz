@@ -3,11 +3,50 @@ require 'namaz/version'
 require 'hashie'
 require 'multi_json'
 require 'faraday'
+require 'time'
+require 'active_support/core_ext/time/zones'
 
 module Namaz
   DEFAULT_API_URL = 'http://api.aladhan.com'
 
   class << self
+    # Retrieve the remaining time to next namaz for a given latitude, longitude, timezonestring and method.
+    #
+    # @param [Float] latitude.
+    # @param [Float] longitude.
+    # @param [String] timezonestring
+    # @param [Integer] method
+    # @param options [Hash], Have optional values like timestamp, that is default to Current timestamp
+    # @return [Hash] namaz_name, and time remain in seconds
+    def upcoming_namaz(latitude:, longitude:, timezonestring:, method:, options: {})
+      namaz_time_response = timings(
+        latitude: latitude,
+        longitude: longitude,
+        timezonestring: timezonestring,
+        method: method,
+        options: options
+      )
+
+      prayer_and_time_remain(namaz_time_response, timezonestring)
+    end
+
+    # Retrieve the remaining time to next namaz for a given city, country, method and timezonestring
+    #
+    # @param [String] city
+    # @param [String] country
+    # @param [Integer] method
+    # @param [Hash] options, Have optional values like timestamp, that is default to Current timestamp
+    # @return [Hash] namaz_name, and time remain in seconds
+    def upcoming_namaz_by_city(city:, country:, method:, timezonestring:, options: {})
+      namaz_time_response = timings_by_city(
+        city: city,
+        country: country,
+        method: method,
+        options: options)
+
+      prayer_and_time_remain(namaz_time_response, timezonestring)
+    end
+
     # Retrieve the latitude, longitude and timezone for a given city
     # @param [String] city
     # @param [String] country
@@ -62,7 +101,6 @@ module Namaz
     #
     # @param [String] city
     # @param [String] country
-    # @param [String] timezonestring
     # @param [Integer] method
     # @param [Hash] options, Have optional values like timestamp, that is default to Current timestamp
     def timings_by_city(city:, country:, method:, options: {})
@@ -152,6 +190,28 @@ module Namaz
     def namaz_calender_response(namaz_url, params)
       response = connection.get(namaz_url, params)
       return Hashie::Mash.new(MultiJson.load(response.body)).data if response.success?
+    end
+
+    def prayer_and_time_remain(times, timezonestring)
+      times.delete('Sunset')
+      times.delete('Sunrise')
+      times.delete('Midnight')
+      times.delete('Imsak')
+
+      Time.zone = timezonestring
+      current_time = Time.now
+      current_time_hms = current_time.strftime('%H:%M:%S')
+      current_time_hm = current_time.strftime('%H:%M')
+
+      times.select { |key, value| times[key] = Time.strptime(value, '%H:%M').strftime('%H:%M') }
+      namaz_name, namaz_time = times.select { |_, value| current_time_hm <= value }.first
+      namaz_name, namaz_time = times.first if namaz_time.blank?
+      time_diff = Time.parse(namaz_time) - Time.parse(current_time_hms)
+      [namaz_name, time_diff.abs]
+
+      Time.zone = nil
+
+      Hashie::Mash.new(namaz_name: namaz_name, time_remaining_in_seconds: time_diff.abs)
     end
 
   end
