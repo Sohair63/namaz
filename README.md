@@ -31,6 +31,31 @@ Make sure you require the library, where you want to use it, Or require in `appl
 require 'namaz'
 ```
 
+## Upcoming Namaz and Namaz Time remain
+Returns upcoming prayer time with the its name.
+Note that: Returning time is in seconds, to help users to convert seconds to bigger units according to their needs or may be better use is placing in some jquery plugin e.g. jquery-countdown.
+
+```ruby
+## Using Altitudes:
+upcoming_namaz = Namaz.upcoming_namaz(latitude: 31.5546, longitude: 74.3572, timezonestring: "Asia/Karachi", method: 1, options: {timestamp: Time.now.to_i})
+
+ => #<Hashie::Mash namaz_name="Fajr" time_remaining_in_seconds=54821.0>
+
+upcoming_namaz.namaz_name
+ => "Fajr"
+upcoming_namaz.time_remaining_in_seconds
+ => 54821.0
+
+## Using City and Country Information:
+ upcoming_namaz = Namaz.upcoming_namaz_by_city(city: 'Karachi', country: 'PK', method: 1, options: {state: 'Punjab', timestamp: Time.now.to_i})
+=> #<Hashie::Mash namaz_name="Fajr" time_remaining_in_seconds=54821.0>
+
+ upcoming_namaz.namaz_name
+ => "Fajr"
+upcoming_namaz.time_remaining_in_seconds
+ => 54821.0
+```
+
 ## Timings
 Returns all prayer times for a specific date and for a specific date in a city. You can then make requests to the following method.
 ```ruby
