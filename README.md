@@ -1,6 +1,5 @@
 # Namaz
-[namaz](https://aladhan.com/prayer-times-api) ruby gem is an API wrapper.
-Namaz is aladhan.com wrapper in ruby to use REST API that is open for public use.
+namaz ruby gem is an API wrapper. Namaz is aladhan.com wrapper in ruby to use REST API that is open for public use.
 
 ## Installation
 
@@ -13,7 +12,7 @@ gem 'namaz'
 For latest code:
 
 ```ruby
-gem 'namaz', git: 'git@github.com:Sohair63/namaz.git'
+gem 'namaz', git: 'https://github.com/Sohair63/namaz.git'
 ```
 
 And then execute:
@@ -237,7 +236,7 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Copyright
 
-Copyright (c) 2013-2016 Sohair S. Ahmad. See LICENSE.txt for further details.
+Copyright (c) 2018 Sohair S. Ahmad. See LICENSE.txt for further details.
 
 ## Development
 
