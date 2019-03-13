@@ -1,4 +1,7 @@
 # Namaz
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a00997d44c73474b9372b8e88ae04fd5)](https://app.codacy.com/app/sohair.ahmad/namaz?utm_source=github.com&utm_medium=referral&utm_content=Sohair63/namaz&utm_campaign=Badge_Grade_Dashboard)
+
 namaz ruby gem is an API wrapper. Namaz is aladhan.com wrapper in ruby to use REST API that is open for public use.
 
 ## Installation
