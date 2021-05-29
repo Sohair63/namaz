@@ -8,8 +8,9 @@ describe Namaz do
   end
 
   context 'unit tests' do
-    let(:latitude)  { 31.5546061 }
-    let(:longitude) { 74.3571581 }
+    # Latlang has got from city_info API
+    let(:latitude) { 31.5203696 }
+    let(:longitude) { 74.3587473 }
     let(:timezonestring) { 'Asia/Karachi' }
     let(:method_number) { 1 }
     let(:country_code) { 'PK' }
@@ -96,26 +97,18 @@ describe Namaz do
       end
     end
 
-    context 'city geolocation information' do
-      it 'varify the correct city geolocation information latitude longitude and timezone' do
+    context 'city geo-location information' do
+      it 'verify the correct city geo-location information latitude longitude and timezone' do
         city_info = Namaz.city_info(city: 'Lahore', country: 'Pakistan')
 
-        expect(city_info.longitude).to eq(longitude.to_s)
-        expect(city_info.latitude).to eq(latitude.to_s)
-        expect(city_info.timezone).to eq(timezonestring)
-      end
-
-      it 'varify the correct city geolocation information with optional parameters' do
-        city_info = Namaz.city_info(city: city_2, country: country_code, options: {state: state})
-
-        expect(city_info.longitude).to eq(longitude.to_s)
-        expect(city_info.latitude).to eq(latitude.to_s)
+        expect(city_info.longitude.to_f).to eq(longitude.to_f)
+        expect(city_info.latitude.to_f).to eq(latitude.to_f)
         expect(city_info.timezone).to eq(timezonestring)
       end
     end
 
-    context 'address geolocation information' do
-      it 'varify the correct address geolocation information latitude longitude and timezone' do
+    context 'address geo-location information' do
+      it 'verify the correct address geo-location information latitude longitude and timezone' do
         address_info = Namaz.address_info(address: 'London, Canary Wharf, London, UK')
 
         expect(address_info).to_not be_nil
@@ -124,7 +117,7 @@ describe Namaz do
         expect(address_info.timezone).to eq('Europe/London')
       end
 
-      it 'varify the correct partial address geolocation information latitude longitude and timezone' do
+      it 'verify the correct partial address geo-location information latitude longitude and timezone' do
         address_info = Namaz.address_info(address: 'London, Canary Wharf, London, UK')
 
         expect(address_info).to_not be_nil

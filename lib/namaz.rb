@@ -7,7 +7,7 @@ require 'time'
 require 'active_support/core_ext/time/zones'
 
 module Namaz
-  DEFAULT_API_URL = 'http://api.aladhan.com'
+  DEFAULT_API_URL = 'http://api.aladhan.com/v1'
 
   class << self
     # Retrieve the remaining time to next namaz for a given latitude, longitude, timezonestring and method.
