@@ -221,6 +221,7 @@ end
 
 ## CHANGE LOG:
 
+* **0.1.5:** Updated endpoint to v1 and fixes for security vulnerabilities
 * **0.1.4:** Added methods `city_info` and `address_info`
 * **0.1.3:** Added methods `calendar` and `calendar_by_city`
 * **0.1.2:** Updated method name for Timings information for city from `timings` to `timings_by_city`
